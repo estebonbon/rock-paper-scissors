@@ -17,7 +17,7 @@
 
     <button onclick="
       
-      const computerMove = pickComputerMove(); /* computerMove is in a different scope here*/
+      computerMove = pickComputerMove(); /* computerMove is in a different scope here*/
 
       playGame ('paper', computerMove);
 
@@ -25,7 +25,7 @@
 
     <button onclick="
 
-      const computerMove = pickComputerMove();
+      computerMove = pickComputerMove();
 
       playGame('scissors', computerMove);
 
@@ -35,17 +35,32 @@
       score.wins = 0;
       score.losses = 0;
       score.ties = 0;
+      localStorage.removeItem('theScore')
       alert('Score was reset.')
       ">Reset Score</button>
 
     <script>
 
-      const score = {
-        wins: 0,
-        losses: 0,
-        ties: 0,
+      let score = JSON.parse(localStorage.getItem('theScore')) 
+        || {
+              wins: 0,
+              losses: 0,
+              ties: 0,
+            };
 
-      }
+
+      /* if (!score) {
+        score = {
+          wins: 0,
+          losses: 0,
+          ties: 0,
+        };
+          if (score === null) {} here we shortened the code 
+        console.log(score)
+      } */
+      
+
+      console.log(JSON.parse((localStorage.getItem('theScore'))));
 
       function playGame (playerMove, computerMove) {
         result = '';
@@ -74,9 +89,13 @@
           score.ties += 1;
         }
 
+        localStorage.setItem('theScore', JSON.stringify(score)); 
+        /* First string is the name, the second string is the value, local storage only supports strings */
+
         alert (`You picked ${playerMove}. Computer picked ${computerMove}. ${result}
         Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`);
       }
+
 
 
       //let computerMove = ''; outside of the fucntions scope
